@@ -1,0 +1,46 @@
+
+name: Build MozJPEG Linux
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: debian:buster
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y \
+            ca-certificates git cmake make \
+            gcc g++ nasm tar
+
+      - name: Checkout MozJPEG
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_SHARED=OFF \
+            -DENABLE_STATIC=ON \
+            -DWITH_SIMD=ON \
+            -DWITH_JPEG8=ON
+
+      - name: Build
+        run: cmake --build build --parallel 2
+
+      - name: Check binary
+        run: |
+          file build/cjpeg
+          ldd build/cjpeg
+          build/cjpeg -version
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: mozjpeg-4.1.5-linux-x86_64
+          path: build/cjpeg
