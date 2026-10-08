@@ -24,7 +24,8 @@ jobs:
           apt-get -o Acquire::Check-Valid-Until=false update
           apt-get install -y \
             ca-certificates git cmake make \
-            gcc g++ nasm tar file
+            gcc g++ nasm tar file \
+            zlib1g-dev libpng-dev
 
       - name: Checkout MozJPEG
         uses: actions/checkout@v4
