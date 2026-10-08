@@ -44,10 +44,13 @@ jobs:
 
       - name: Check binary
         run: |
-          find build -type f \( -name cjpeg -o -name cjpeg-static \) -print
+          file build/cjpeg-static
+          ldd build/cjpeg-static
+          build/cjpeg-static -version
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
           name: mozjpeg-4.1.5-linux-x86_64
-          path: build/cjpeg
+          path: build/cjpeg-static
+          if-no-files-found: error
