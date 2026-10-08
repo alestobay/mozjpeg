@@ -3,6 +3,9 @@ name: Build MozJPEG Linux
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - build-linux-4.1.5
 
 jobs:
   build:
