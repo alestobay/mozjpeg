@@ -16,10 +16,15 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-          apt-get update
+          printf '%s\n' \
+            'deb http://archive.debian.org/debian buster main' \
+            'deb http://archive.debian.org/debian-security buster/updates main' \
+            > /etc/apt/sources.list
+          rm -f /etc/apt/sources.list.d/*.list
+          apt-get -o Acquire::Check-Valid-Until=false update
           apt-get install -y \
             ca-certificates git cmake make \
-            gcc g++ nasm tar
+            gcc g++ nasm tar file
 
       - name: Checkout MozJPEG
         uses: actions/checkout@v4
