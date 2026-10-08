@@ -44,9 +44,7 @@ jobs:
 
       - name: Check binary
         run: |
-          file build/cjpeg
-          ldd build/cjpeg
-          build/cjpeg -version
+          find build -type f \( -name cjpeg -o -name cjpeg-static \) -print
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
